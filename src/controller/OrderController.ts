@@ -59,4 +59,19 @@ export class OrderController {
 		}
 	}
 
+	async getAllOrderByUserId(req: Request, res: Response) {
+		console.log("========",req.params.id)
+		try {
+			const id = (req.params.id) as string
+			const order = await orderBusiness.getAllOrderByUserId(id, req.headers.authorization as string)
+			res.status(200).send(order)
+		} catch (err) {
+			res.status(err.customErrorCode || 400).send({
+				message: err.message,
+			})
+		} finally {
+			await BaseDatabase.destroyConnection()
+		}
+	}
+
 }

@@ -63,5 +63,20 @@ export class OrderDatabase extends BaseDatabase {
 		return order
 	}
 
+	public async getAllOrderByUserId(id: string):Promise<Order[]>{
+
+		const order = await this.getConnection()
+			.select("*")
+			.from(this.tables.orders)
+			.where("user_id",id)
+			.groupBy('id')
+			.orderBy('delivery')
+			
+		if (!order[0]) {
+			throw new NotFoundError(`Not found orders`)
+		}
+
+		return order
+	}
 	
 }

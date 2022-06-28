@@ -50,4 +50,16 @@ export class OrderBusiness {
 		return this.orderDatabase.getAllOrder()
 	}
 
+	async getAllOrderByUserId(id: string, token: string): Promise<Order[]> {
+		const tokenData = this.authenticator.getData(token)
+		if (!tokenData.id) {
+			throw new UnauthorizedError("Only authorized can access this feature")
+		}
+		if (!id) {
+			throw new InvalidInputError("Invalid id to getAllOrderByUserId")
+		}
+
+		return  await this.orderDatabase.getAllOrderByUserId(id)
+	}
+
 }

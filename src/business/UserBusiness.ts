@@ -20,8 +20,11 @@ export class UserBusiness {
     
     if (user.email.indexOf("@") === -1) throw new InvalidInputError("Invalid email format")
     
-    
     if (user.password && user.password.length < 6) throw new InvalidInputError("Password should have more than 6 digits")
+    
+    const userDB = await this.userDatabase.getUserByEmail(user.email)
+
+    if (!userDB) throw new InvalidInputError("Invalid email")
     
     const userId = this.idGenerator.generate()
 
